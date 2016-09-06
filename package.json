@@ -1,6 +1,6 @@
 {
   "name": "react-dragscroll",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "React DragScroll is a React component which enables scrolling via holding the mouse button.",
   "main": "index.js",
   "scripts": {
