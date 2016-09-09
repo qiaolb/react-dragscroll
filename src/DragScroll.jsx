@@ -3,7 +3,6 @@
  */
 
 import React from "react";
-import _ from "lodash";
 
 export default class DragScroll extends React.Component {
   constructor(props) {
@@ -60,7 +59,7 @@ export default class DragScroll extends React.Component {
   }
 
   renderChildren(dom, type) {
-    if (_.isArray(dom)) {
+    if (isArray(dom)) {
       return dom.map((item, index) => {
         return React.cloneElement(item, {
           key: item.key || index,
@@ -68,12 +67,20 @@ export default class DragScroll extends React.Component {
           onMouseDown: this.mouseDownHandle.bind(this)
         });
       });
-    } else if (_.isObject(dom)) {
+    } else if ('object' == typeof dom) {
       return React.cloneElement(dom, {
         key: item.key || index,
         onMouseUp: this.mouseUpHandle.bind(this),
         onMouseDown: this.mouseDownHandle.bind(this)
       });
     }
+  }
+
+  isArray(object){
+    return  object && typeof object==='object' &&
+      typeof object.length==='number' &&
+      typeof object.splice==='function' &&
+      //判断length属性是否是可枚举的 对于数组 将得到false
+      !(object.propertyIsEnumerable('length'));
   }
 }
