@@ -59,7 +59,7 @@ export default class DragScroll extends React.Component {
   }
 
   renderChildren(dom, type) {
-    if (isArray(dom)) {
+    if (this.isArray(dom)) {
       return dom.map((item, index) => {
         return React.cloneElement(item, {
           key: item.key || index,
