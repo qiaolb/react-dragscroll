@@ -14,7 +14,11 @@ export default class DragScroll extends React.Component {
   }
 
   render() {
-    return <div style={{height: this.props.height, width: this.props.width, overflow: 'auto'}}
+    let sytle = null;
+    if (this.props.height && this.props.width) {
+      sytle = {style: {height: this.props.height, width: this.props.width, overflow: 'auto'}};
+    }
+    return <div className={this.props.className} {...sytle}
                 onMouseUp={this.mouseUpHandle.bind(this)}
                 onMouseMove={this.mouseMoveHandle.bind(this)}
                 ref="container">
