@@ -1,6 +1,6 @@
 {
   "name": "react-dragscroll",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "React DragScroll is a React component which enables scrolling via holding the mouse button.",
   "main": "index.js",
   "files": [
@@ -33,7 +33,10 @@
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
-    "webpack": "^1.13.2"
+    "bower-webpack-plugin": "^0.1.9",
+    "react-hot-loader": "^3.0.0-beta.3",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"

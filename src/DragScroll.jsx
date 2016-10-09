@@ -69,7 +69,6 @@ export default class DragScroll extends React.Component {
       });
     } else if ('object' == typeof dom) {
       return React.cloneElement(dom, {
-        key: item.key || index,
         onMouseUp: this.mouseUpHandle.bind(this),
         onMouseDown: this.mouseDownHandle.bind(this)
       });

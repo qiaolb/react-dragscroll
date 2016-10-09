@@ -3,11 +3,13 @@
  */
 
 import React from 'react';
+import {render} from 'react-dom';
 import DragScroll from '../lib/DragScroll';
 
 class Main extends React.Component {
   render () {
-    <DragScroll height={200} width={300}>
+    return <DragScroll height={200} width={300}>
+      <div>
       <div>test1</div>
       <div>test2</div>
       <div>test3</div>
@@ -29,6 +31,9 @@ class Main extends React.Component {
       <div>test19</div>
       <div>test20</div>
       <div>test21</div>
+        </div>
     </DragScroll>;
   }
 }
+
+render(<Main/>, document.getElementById('app'));
