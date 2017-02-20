@@ -22,7 +22,7 @@ export default class DragScroll extends React.Component {
                 onMouseUp={this.mouseUpHandle.bind(this)}
                 onMouseMove={this.mouseMoveHandle.bind(this)}
                 ref="container">
-      {this.renderChildren(this.props.children)}
+      {this.props.children && this.renderChildren(this.props.children)}
     </div>;
   }
 
