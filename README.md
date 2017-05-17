@@ -1,6 +1,11 @@
 # react-dragscroll
 React DragScroll is a React component which enables scrolling via holding the mouse button.
 
+[![npm](https://img.shields.io/npm/v/react-dragscroll.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/react-dragscroll)
+![react-version](https://img.shields.io/badge/react%20version-15.0.0%20or%20later-61dafb.svg)
+![license-mit](https://img.shields.io/badge/license-MIT-42cd00.svg)
+
+
 ## install
 
 ```
