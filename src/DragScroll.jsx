@@ -1,14 +1,22 @@
 /**
  * Created by joe on 16/9/2.
+ * Refactored by hkgsherlock on 23 MAR 2018.
  */
 
 import React from "react";
 
 class DragScroll extends React.Component {
-    state = {
-        data: props.dataSource,
-        dragging: false
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: props.dataSource,
+            dragging: false
+        };
+    }
+
+    static defaultProps = {
+        tag: 'div',
+    }
 
     componentDidMount() {
         window.addEventListener('mouseup', this.mouseUpHandle.bind(this));
@@ -17,8 +25,10 @@ class DragScroll extends React.Component {
 
     render() {
         let {
+            tag,
             children,
             style,
+            ref,
             ...etcProps,
         } = this.props;
 
@@ -30,16 +40,19 @@ class DragScroll extends React.Component {
                 overflow: 'auto',
             };
         }
-        return (
-            <div
-                {...etcProps}
-                style={style}
-                onMouseUp={this.mouseUpHandle.bind(this)}
-                onMouseMove={this.mouseMoveHandle.bind(this)}
-                ref={(r) => this.container = r}
-            >
-                {children && this.renderChildren(children)}
-            </div>
+        return React.createElement(
+            tag,
+            {
+                ...etcProps,
+                style: style,
+                onMouseUp: this.mouseUpHandle.bind(this),
+                onMouseMove: this.mouseMoveHandle.bind(this),
+                ref: (r) => {
+                    this.container = r;
+                    typeof ref === 'function' && ref(r);
+                },
+            },
+            children && this.renderChildren(children)
         );
     }
 
@@ -63,18 +76,14 @@ class DragScroll extends React.Component {
     }
 
     mouseUpHandle(e) {
-        if (this.state.dragging) {
-            this.setState({ dragging: false });
-        }
+        this.setState({ dragging: false });
     }
 
     mouseDownHandle(e) {
         e.preventDefault();
-        if (!this.state.dragging) {
-            this.setState({ dragging: false });
-            this.lastClientX = e.clientX;
-            this.lastClientY = e.clientY;
-        }
+        this.setState({ dragging: true });
+        this.lastClientX = e.clientX;
+        this.lastClientY = e.clientY;
     }
 
     mouseMoveHandle(e) {
