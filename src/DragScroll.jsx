@@ -5,35 +5,52 @@
 import React from "react";
 
 export default class DragScroll extends React.Component {
+  static computeStyle(props) {
+    if (props.height && props.width) {
+      return {style: {height: props.height, width: props.width, overflow: 'auto'}};
+    }
+    return null;
+  }
+  container;
   constructor(props) {
     super(props);
     this.state = {
       data: props.dataSource,
-      dragging: false
+      dragging: false,
+      containerStyle: DragScroll.computeStyle(props),
     };
-  }
 
+    this.mouseDownHandle = this.mouseDownHandle.bind(this);
+    this.mouseMoveHandle = this.mouseMoveHandle.bind(this);
+    this.mouseUpHandle = this.mouseUpHandle.bind(this);
+  }
+  
   render() {
-    let sytle = null;
-    if (this.props.height && this.props.width) {
-      sytle = {style: {height: this.props.height, width: this.props.width, overflow: 'auto'}};
-    }
-    return <div className={this.props.className} {...sytle}
-                onMouseUp={this.mouseUpHandle.bind(this)}
-                onMouseMove={this.mouseMoveHandle.bind(this)}
-                ref="container">
+    return <div className={this.props.className} {...this.state.containerStyle}
+                onMouseUp={this.mouseUpHandle}
+                onMouseMove={this.mouseMoveHandle}
+                ref={(e) => {this.container = e;}}>
       {this.props.children && this.renderChildren(this.props.children)}
     </div>;
   }
 
   componentDidMount() {
-    window.addEventListener('mouseup', this.mouseUpHandle.bind(this));
-    window.addEventListener('mousemove', this.mouseMoveHandle.bind(this));
+    window.addEventListener('mouseup', this.mouseUpHandle);
+    window.addEventListener('mousemove', this.mouseMoveHandle);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!prevState.containerStyle 
+      || (prevState.containerStyle.style.height !== nextProps.height 
+      || prevState.containerStyle.style.width !== nextProps.width)) {
+     return { containerStyle: DragScroll.computeStyle(nextProps) };
+    }
+    return null;
   }
 
   componentWillUnmount() {
-    window.removeEventListener('mouseup', this.mouseUpHandle.bind(this));
-    window.removeEventListener('mousemove', this.mouseMoveHandle.bind(this));
+    window.removeEventListener('mouseup', this.mouseUpHandle);
+    window.removeEventListener('mousemove', this.mouseMoveHandle);
   }
 
   mouseUpHandle(e) {
@@ -55,9 +72,9 @@ export default class DragScroll extends React.Component {
 
   mouseMoveHandle(e) {
     if (this.state.dragging) {
-      this.refs.container.scrollLeft -=
+      this.container.scrollLeft -=
         (-this.lastClientX + (this.lastClientX = e.clientX));
-      this.refs.container.scrollTop -=
+      this.container.scrollTop -=
         (-this.lastClientY + (this.lastClientY = e.clientY));
     }
   }
@@ -67,14 +84,14 @@ export default class DragScroll extends React.Component {
       return dom.map((item, index) => {
         return React.cloneElement(item, {
           key: item.key || index,
-          onMouseUp: this.mouseUpHandle.bind(this),
-          onMouseDown: this.mouseDownHandle.bind(this)
+          onMouseUp: this.mouseUpHandle,
+          onMouseDown: this.mouseDownHandle
         });
       });
     } else if ('object' == typeof dom) {
       return React.cloneElement(dom, {
-        onMouseUp: this.mouseUpHandle.bind(this),
-        onMouseDown: this.mouseDownHandle.bind(this)
+        onMouseUp: this.mouseUpHandle,
+        onMouseDown: this.mouseDownHandle
       });
     }
   }
