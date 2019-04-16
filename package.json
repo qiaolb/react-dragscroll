@@ -25,7 +25,7 @@
     "url": "https://github.com/qiaolb/react-dragscroll/issues"
   },
   "homepage": "https://github.com/qiaolb/react-dragscroll#readme",
-  "dependencies": {
+  "peerDependencies": {
     "react": "^16.1.1"
   },
   "devDependencies": {
