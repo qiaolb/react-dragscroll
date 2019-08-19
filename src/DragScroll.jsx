@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useRef, useMemo } from "react";
 
 export default function DragScroll({ className, children, mobileDisabled = true }) {
 
@@ -22,6 +22,7 @@ export default function DragScroll({ className, children, mobileDisabled = true 
             setPosition({ x: e.clientX, y: e.clientY });
         }
     }, [dragging]);
+
     const mouseMove = useCallback(e => {
         if (dragging) {
             container.current.scrollLeft -= (-lastPosition.x + e.clientX);
@@ -30,13 +31,20 @@ export default function DragScroll({ className, children, mobileDisabled = true 
         }
     }, [container, dragging, lastPosition]);
 
+    useEffect(() => {
+        window.addEventListener("mouseup", mouseUp, false);
+        return () => {
+            window.removeEventListener("mouseup", mouseUp, false);
+        }
+    }, [mouseUp]);
+
+    
     if (mobileDisabled && isMobile) {
         return <div className={className}>{children}</div>
     }
 
     return (
         <div className={className}
-            onMouseUp={mouseUp}
             onMouseDown={mouseDown}
             onMouseMove={mouseMove}
             ref={container}>
